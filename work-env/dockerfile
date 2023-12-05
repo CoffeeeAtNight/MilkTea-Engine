@@ -1,0 +1,15 @@
+FROM ubuntu:latest
+
+# Install C++ compilers, SFML, and other dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libsfml-dev \
+    git \
+    cmake
+
+# Clone and build Dear ImGui
+RUN git clone --depth 1 https://github.com/ocornut/imgui.git /imgui
+
+# (Additional setup steps here)
+
+CMD ["/bin/bash"]
