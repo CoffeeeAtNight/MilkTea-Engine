@@ -38,8 +38,11 @@ void GameEngine::processEvents() {
 
 			_mWindowWidth = updatedMainWindowSize.x;
 			_mWindowHeight = updatedMainWindowSize.y;
-			_mGuiSize = updatedMainWindowSize;
-			_mGuiSize.y += _mGuiOffsetY;
+			guiLoader.setGuiSize(updatedMainWindowSize);
+
+			guiLoader.setOffsetY(
+				guiLoader.getGuiOffsetY()
+			);
 		}
 	}
 }
@@ -57,5 +60,6 @@ void GameEngine::render() {
 }
 
 void GameEngine::displayMainGuiWindow() const {
-	
+	// Init main gui window
+	guiLoader.displayMainGuiWindow();
 }

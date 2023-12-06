@@ -151,11 +151,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Asset.cpp" />
-    <ClCompile Include="AssetManager.cpp" />
-    <ClCompile Include="FontLoader.cpp" />
-    <ClCompile Include="GameEngine.cpp" />
-    <ClCompile Include="GuiLoader.cpp" />
+    <ClCompile Include="AssetManager\Asset\Asset.cpp" />
+    <ClCompile Include="AssetManager\AssetManager.cpp" />
+    <ClCompile Include="FontLoader\FontLoader.cpp" />
+    <ClCompile Include="GameEngine\GameEngine.cpp" />
+    <ClCompile Include="GuiLoader\GuiLoader.cpp" />
     <ClCompile Include="imgui\imgui-SFML.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="FontLoader.h" />
-    <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GuiLoader.h" />
     <ClInclude Include="imgui\imconfig-SFML.h" />
     <ClInclude Include="imgui\imconfig.h" />
