@@ -63,6 +63,12 @@
     <ClCompile Include="AssetManager\Asset\Asset.cpp">
       <Filter>Source Files\AssetManager</Filter>
     </ClCompile>
+    <ClCompile Include="Utility\UuidFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager\Asset\AssetUuid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -92,20 +98,14 @@
     <ClInclude Include="imgui\imstb_truetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Asset.h">
-      <Filter>Source Files\AssetManager\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetManager.h">
-      <Filter>Source Files\AssetManager</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngine\GameEngine.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GuiLoader.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="include\UuidFactory.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FontLoader.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="include\AssetUuid.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

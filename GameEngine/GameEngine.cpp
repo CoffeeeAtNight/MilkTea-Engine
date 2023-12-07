@@ -7,6 +7,13 @@ GameEngine::GameEngine() : window(sf::VideoMode(_mWindowWidth, _mWindowHeight), 
 {
 	ImGui::SFML::Init(window);
 	GameEngine::guiLoader = GuiLoader(&window, _mWindowWidth, _mWindowHeight);
+	GameEngine::assetManager = AssetManager::AssetManager();
+
+	guiLoader.setImportAssetCallback(
+		[this](const std::string& filePath) {
+			this->assetManager.importAsset(filePath);
+		}
+	);
 }
 
 GameEngine::~GameEngine()
@@ -59,7 +66,7 @@ void GameEngine::render() {
 	window.display();
 }
 
-void GameEngine::displayMainGuiWindow() const {
+void GameEngine::displayMainGuiWindow() {
 	// Init main gui window
 	guiLoader.displayMainGuiWindow();
 }

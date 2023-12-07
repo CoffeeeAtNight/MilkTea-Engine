@@ -2,7 +2,7 @@
 
 GuiLoader::GuiLoader() {}
 
-GuiLoader::GuiLoader(sf::RenderWindow* sfWin, int mWinWidth, int mWinHeight)
+GuiLoader::GuiLoader(sf::RenderWindow* sfWin, float mWinWidth, float mWinHeight)
 {
 	window = sfWin;
 	_mWindowWidth = mWinWidth;
@@ -43,7 +43,7 @@ void GuiLoader::setOffsetX(float guiOffsetX) {
 	_mGuiSize.x += guiOffsetX;
 }
 
-void GuiLoader::displayMainGuiWindow() const {
+void GuiLoader::displayMainGuiWindow() {
 	// Start ImGui frame
 	ImGui::Begin("mMenu", nullptr, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	if (ImGui::BeginMenuBar())
@@ -77,7 +77,7 @@ void GuiLoader::displayMainGuiWindow() const {
 
 		if (ImGui::BeginMenu("Assets")) {
 			if (ImGui::MenuItem("Import", "Ctrl+I")) {
-				// Undo action
+				onImportButtonClicked("/path/to/asset");
 			}
 			ImGui::EndMenu();
 		}
@@ -87,4 +87,16 @@ void GuiLoader::displayMainGuiWindow() const {
 	ImGui::SetWindowCollapsed(false);
 	ImGui::SetWindowPos(ImVec2(0, -_mGuiOffsetY));
 	ImGui::End();
+}
+
+void GuiLoader::setImportAssetCallback(const std::function<void(const std::string&)>& callback)
+{
+	importAssetCallback = callback;
+}
+
+void GuiLoader::onImportButtonClicked(const std::string& filePath)
+{
+	if (importAssetCallback) {
+		importAssetCallback(filePath);
+	}
 }
