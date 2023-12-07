@@ -17,6 +17,8 @@ MilkTea Engine is a simple, beginner-friendly 2D game engine designed for ease o
 - [x] **Initial Project Setup**: Set up the basic project structure and dependencies.
 - [x] **Game Engine Foundation**: Laid down the basic framework for the game engine.
 - [x] **GUI Refactoring**: Extracted the GUI into its own `GuiLoader` class for better modularity and organization.
+- [x] **UUID Generator**: Built a primitive UUID generator to uniquely identify asset instances.
+- [x] **GUI->AssetManager Callback mechanism**: Implemented a callback mechanism for the GuiLoader to invoke asset importing.
 
 ### Ongoing Tasks
 - [ ] **Documentation**: Regularly update documentation and inline comments for clarity and maintainability.
@@ -24,7 +26,6 @@ MilkTea Engine is a simple, beginner-friendly 2D game engine designed for ease o
 
 ### Short-Term Goals
 - [ ] **Asset Manager Implementation**:
-  - [x] Build a primitive UUID generator to uniquely identify asset instances.
   - [ ] Develop a basic version of the `AssetManager` class.
   - [ ] Implement asset-importing functionality for one asset type (e.g., images).
   - [ ] Create a simple UI for asset importation and display.
