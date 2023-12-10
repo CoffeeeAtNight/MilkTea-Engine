@@ -20,3 +20,4 @@ void AssetManager::importAsset(string pathToAsset)
 	std::cout << asset.getFilePath() << "\n";
 
 }
+

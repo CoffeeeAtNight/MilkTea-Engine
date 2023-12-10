@@ -89,8 +89,7 @@ void GuiLoader::displayMainGuiWindow() {
 	ImGui::End();
 }
 
-void GuiLoader::setImportAssetCallback(
-	const std::function<void(const std::string&)>& callback)
+void GuiLoader::setImportAssetCallback(const std::function<void(const std::string&)>& callback)
 {
 	importAssetCallback = callback;
 }
