@@ -1,10 +1,12 @@
 #include "GuiLoader.h"
+#include <ChaiBusAddress.h>
 
-GuiLoader::GuiLoader() {}
+GuiLoader::GuiLoader(sf::RenderWindow* sfWin, ChaiBus& eventbus) : window(sfWin), _bus(eventbus) {};
 
-GuiLoader::GuiLoader(sf::RenderWindow* sfWin, float mWinWidth, float mWinHeight)
+GuiLoader::GuiLoader(sf::RenderWindow* sfWin, float mWinWidth, float mWinHeight, ChaiBus& eventbus)
+	: window(sfWin),
+	_bus(eventbus)
 {
-	window = sfWin;
 	_mWindowWidth = mWinWidth;
 	_mWindowHeight = mWinHeight;
 	GuiLoader::setGuiSize(ImVec2(mWinWidth, mWinHeight + _mGuiOffsetY));
@@ -89,15 +91,10 @@ void GuiLoader::displayMainGuiWindow() {
 	ImGui::End();
 }
 
-void GuiLoader::setImportAssetCallback(
-	const std::function<void(const std::string&)>& callback)
+void GuiLoader::onImportButtonClicked(const string& filePath)
 {
-	importAssetCallback = callback;
-}
+	ChaiEvent event(ChaiBusAddress::IMPORT_ASSET);
+	event.message["path"] = filePath;
 
-void GuiLoader::onImportButtonClicked(const std::string& filePath)
-{
-	if (importAssetCallback) {
-		importAssetCallback(filePath);
-	}
+	_bus.publish(event);
 }

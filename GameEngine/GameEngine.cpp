@@ -3,17 +3,13 @@
 #include "GameEngine.h"
 #include "GuiLoader.h"
 
-GameEngine::GameEngine() : window(sf::VideoMode(_mWindowWidth, _mWindowHeight), engineName)
+GameEngine::GameEngine() :
+	window(sf::VideoMode(_mWindowWidth, _mWindowHeight), engineName),
+	chaibus(),
+	guiLoader(&window, _mWindowWidth, _mWindowHeight, chaibus),
+	assetManager(chaibus)
 {
 	ImGui::SFML::Init(window);
-	GameEngine::guiLoader = GuiLoader(&window, _mWindowWidth, _mWindowHeight);
-	GameEngine::assetManager = AssetManager::AssetManager();
-
-	guiLoader.setImportAssetCallback(
-		[this](const std::string& filePath) {
-			this->assetManager.importAsset(filePath);
-		}
-	);
 }
 
 GameEngine::~GameEngine()
