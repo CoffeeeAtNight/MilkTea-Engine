@@ -4,13 +4,10 @@
 GuiLoader::GuiLoader(sf::RenderWindow* sfWin, ChaiBus& eventbus) : window(sfWin), _bus(eventbus) {};
 
 GuiLoader::GuiLoader(sf::RenderWindow* sfWin, float mWinWidth, float mWinHeight, ChaiBus& eventbus)
-	: window(sfWin),
-	_bus(eventbus)
-{
-	_mWindowWidth = mWinWidth;
-	_mWindowHeight = mWinHeight;
-	GuiLoader::setGuiSize(ImVec2(mWinWidth, mWinHeight + _mGuiOffsetY));
+	: window(sfWin), _bus(eventbus), _mWindowWidth(mWinWidth), _mWindowHeight(mWinHeight) {
+	_mGuiSize = ImVec2(_mWindowWidth, _mWindowHeight + _mGuiOffsetY);
 }
+
 
 GuiLoader::~GuiLoader() {}
 

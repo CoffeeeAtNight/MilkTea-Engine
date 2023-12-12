@@ -1,15 +1,23 @@
 #include <iostream>
 
-#include "GameEngine.h"
-#include "GuiLoader.h"
+#include <GameEngine.h>
+#include <GuiLoader.h>
 
-GameEngine::GameEngine() :
-	window(sf::VideoMode(_mWindowWidth, _mWindowHeight), engineName),
+const unsigned int GameEngine::WINDOW_WIDTH = 800;
+const unsigned int GameEngine::WINDOW_HEIGHT = 600;
+const string GameEngine::ENGINE_NAME = "MilkTea Engine";
+
+GameEngine::GameEngine()
+	: window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), ENGINE_NAME),
 	chaibus(),
 	guiLoader(&window, _mWindowWidth, _mWindowHeight, chaibus),
 	assetManager(chaibus)
 {
 	ImGui::SFML::Init(window);
+	_mWindowWidth = window.getSize().x;
+	_mWindowHeight = window.getSize().y;
+
+	guiLoader.setGuiSize(ImVec2(_mWindowWidth, _mWindowHeight + guiLoader.getGuiOffsetY()));
 }
 
 GameEngine::~GameEngine()

@@ -1,5 +1,8 @@
-#include "AssetManager.h"
+#include <AssetManager.h>
 #include <ChaiBusAddress.h>
+#include <boost/filesystem.hpp>
+
+namespace fs = boost::filesystem;
 
 AssetManager::AssetManager(ChaiBus& eventbus) : _bus(eventbus)
 {
@@ -11,37 +14,82 @@ AssetManager::AssetManager(ChaiBus& eventbus) : _bus(eventbus)
 	);
 };
 
-void AssetManager::importAsset(string pathToAsset)
+void AssetManager::importAsset()
 {
 	string assetName = "";
 	size_t assetSize = 0;
 
-	Asset asset = Asset::Asset(assetName, assetSize, pathToAsset);
+	string filePath = OpenFileDialogToGetFileName();
 
-	std::cout << "\n" << asset.getAssetUuid() << "\n";
-	std::cout << asset.getFilePath() << "\n";
+	Asset asset = Asset::Asset(assetName, assetSize, filePath);
+	_mLogger.log("Importing new asset...");
+	_mLogger.log(asset.getAssetUuid());
+	_mLogger.log(asset.getFilePath());
+
+	if (!fs::exists(filePath)) {
+		_mLogger.log("File was either deleted or not found");
+		return;
+	}
+
+	try
+	{
+
+	}
+	catch (const std::exception& ex)
+	{
+
+	}
 
 }
 
 void AssetManager::onEvent(ChaiEvent& event)
 {
-	cout << "Event recieved!!" << "\n";
+	_mLogger.log("Event recieved!!");
+
 	try
 	{
-		auto it = event.message.find("path");
-		if (it == event.message.end()) {
-			throw std::runtime_error("Path could not be found in AssetManager event");
-		}
-
-		const std::string& assetPath = it->second;
-
 		if (event.name == ChaiBusAddress::IMPORT_ASSET)
 		{
-			importAsset(assetPath);
+			importAsset();
 		}
 	}
 	catch (const std::exception& e)
 	{
-		std::cout << e.what() << "\n";
+		_mLogger.log(e.what());
 	}
+}
+
+string AssetManager::OpenFileDialogToGetFileName()
+{
+	OPENFILENAME ofn;       // common dialog box structure
+	wchar_t szFile[260]{};  // buffer for file name
+	HWND hwnd = NULL;       // owner window
+	HANDLE hf = nullptr;    // file handle
+
+	// Initialize OPENFILENAME
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = hwnd;
+	ofn.lpstrFile = szFile;
+	// Set lpstrFile[0] to '\0' so that GetOpenFileName does not 
+	// use the contents of szFile to initialize itself.
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(szFile);
+	wchar_t szFilter[] = L"JPG (*.jpg)\0*.jpg\0PNG (*.png)\0*.png\0";
+	ofn.lpstrFilter = szFilter;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	// Display the Open dialog box.
+	if (GetOpenFileName(&ofn) == TRUE) {
+		// Convert wide-character string (LPWSTR) to a multi-byte string (std::string)
+		int size_needed = WideCharToMultiByte(CP_UTF8, 0, &ofn.lpstrFile[0], -1, NULL, 0, NULL, NULL);
+		std::string filePath(size_needed, 0);
+		WideCharToMultiByte(CP_UTF8, 0, &ofn.lpstrFile[0], -1, &filePath[0], size_needed, NULL, NULL);
+		return filePath;
+	}
+	return "";
 };
