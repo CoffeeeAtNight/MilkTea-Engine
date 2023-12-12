@@ -18,13 +18,15 @@ MilkTea Engine is a simple, beginner-friendly 2D game engine designed for ease o
 - [x] **Game Engine Foundation**: Laid down the basic framework for the game engine.
 - [x] **GUI Refactoring**: Extracted the GUI into its own `GuiLoader` class for better modularity and organization.
 - [x] **UUID Generator**: Built a primitive UUID generator to uniquely identify asset instances following the Factory Pattern.
-- [x] **GUI->AssetManager Callback**: Implemented a callback mechanism for the GuiLoader to invoke asset importing via AssetManager.
+- [x] ~~**GUI->AssetManager Callback**: Implemented a callback mechanism for the GuiLoader to invoke asset importing via AssetManager.~~
 - [x] **Implementing Eventbus**: Building a simple Eventbus system (ChaiBus) to replace callbacks.
+- [x] **Added WinAPI to the project**: Added OpenFileDialog method to handle asset import via AssetManager.
+- [x] **Added Boost Filesystem**: Added the Boost Filesystem to the Engine.
 
 ### Ongoing Tasks
 - [ ] **Documentation**: Regularly update documentation and inline comments for clarity and maintainability.
 - [ ] **Testing and Debugging**: Continuously test new features and fix bugs.
-- [ ] **Refining the eventbus / event system**
+- [ ] **Refining the eventbus / event system**: Expanding the functions of the eventbus
 
 ### Short-Term Goals
 - [ ] **Asset Manager Implementation**:
