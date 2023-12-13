@@ -1,10 +1,9 @@
 #include <AssetManager.h>
 #include <ChaiBusAddress.h>
-#include <boost/filesystem.hpp>
 
-namespace fs = boost::filesystem;
-
-AssetManager::AssetManager(ChaiBus& eventbus) : _bus(eventbus)
+AssetManager::AssetManager(ChaiBus& eventbus)
+	: _bus(eventbus),
+	_assetParentExpDir("C:\\MilkTea-Engine\\Assets")
 {
 	_bus.subscribe(
 		ChaiBusAddress::IMPORT_ASSET,
@@ -16,7 +15,7 @@ AssetManager::AssetManager(ChaiBus& eventbus) : _bus(eventbus)
 
 void AssetManager::importAsset()
 {
-	string assetName = "";
+	string assetName = "test.jpg";
 	size_t assetSize = 0;
 
 	string filePath = OpenFileDialogToGetFileName();
@@ -31,15 +30,32 @@ void AssetManager::importAsset()
 		return;
 	}
 
+	fs::path pathOfFileToImport = fs::path(filePath);
+
 	try
 	{
+		_assetParentExpDir /= "images";
+		_assetParentExpDir /= assetName;
 
+		_mLogger.log("Now copying the file to: " + _assetParentExpDir.string());
+		bool fileWasCopied = fs::copy_file(
+			pathOfFileToImport,
+			_assetParentExpDir,
+			boost::filesystem::copy_options::overwrite_existing
+		);
+
+		if (fileWasCopied) {
+			_mLogger.log("Successfully copied file to destination!");
+		}
+		else {
+			_mLogger.log("Something wrong happened while trying to copy the file");
+		}
 	}
 	catch (const std::exception& ex)
 	{
-
+		_mLogger.log("Error occurred while tring to copy file:");
+		_mLogger.log(ex.what());
 	}
-
 }
 
 void AssetManager::onEvent(ChaiEvent& event)

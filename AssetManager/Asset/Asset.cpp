@@ -13,10 +13,6 @@ Asset::Asset(string assetName, size_t assetSize, string pathToAsset)
 	filePath = pathToAsset;
 }
 
-Asset::~Asset()
-{
-}
-
 string Asset::getAssetUuid()
 {
 	return uuid;
