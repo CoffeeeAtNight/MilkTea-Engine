@@ -9,15 +9,19 @@ const string GameEngine::ENGINE_NAME = "MilkTea Engine";
 
 GameEngine::GameEngine()
 	: window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), ENGINE_NAME),
+	guiLoader(&window, WINDOW_WIDTH, WINDOW_HEIGHT, chaibus),
 	chaibus(),
-	guiLoader(&window, _mWindowWidth, _mWindowHeight, chaibus),
-	assetManager(chaibus)
-{
-	ImGui::SFML::Init(window);
+	assetManager(chaibus) {
+
+	// Now update the actual window dimensions
 	_mWindowWidth = window.getSize().x;
 	_mWindowHeight = window.getSize().y;
 
+	// Update GuiLoader with the actual window size
 	guiLoader.setGuiSize(ImVec2(_mWindowWidth, _mWindowHeight + guiLoader.getGuiOffsetY()));
+
+	// Initialize SFML with ImGui
+	ImGui::SFML::Init(window);
 }
 
 GameEngine::~GameEngine()
@@ -54,6 +58,18 @@ void GameEngine::processEvents() {
 			guiLoader.setOffsetY(
 				guiLoader.getGuiOffsetY()
 			);
+
+			guiLoader.setAssetManagerGuiSize(
+				updatedMainWindowSize.x,
+				GUI_SIZE_DIRECTION::X
+			);
+
+			guiLoader.setAssetManagerGuiSize(
+				updatedMainWindowSize.y / 3,
+				GUI_SIZE_DIRECTION::Y
+			);
+
+			guiLoader.setAssetManagerGuiPos(ImVec2(0, _mWindowHeight - updatedMainWindowSize.y / 3));
 		}
 	}
 }
