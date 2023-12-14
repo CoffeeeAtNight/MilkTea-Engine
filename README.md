@@ -30,8 +30,8 @@ MilkTea Engine is a simple, beginner-friendly 2D game engine designed for ease o
 
 ### Short-Term Goals
 - [ ] **Asset Manager Implementation**:
-  - [ ] Develop a basic version of the `AssetManager` class.
-  - [ ] Implement asset-importing functionality for one asset type (e.g., images).
+  - [x] Develop a basic version of the `AssetManager` class.
+  - [x] Implement asset-importing functionality for one asset type (e.g., images).
   - [ ] Create a simple UI for asset importation and display.
 
 - [ ] **Asynchronous Asset Loading**:
