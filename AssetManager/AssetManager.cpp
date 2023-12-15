@@ -1,9 +1,7 @@
 #include <AssetManager.h>
-#include <ChaiBusAddress.h>
 
 AssetManager::AssetManager(ChaiBus& eventbus)
-	: _bus(eventbus),
-	_assetParentExpDir("C:\\MilkTea-Engine\\Assets")
+	: _bus(eventbus)
 {
 	_bus.subscribe(
 		ChaiBusAddress::IMPORT_ASSET,
@@ -11,19 +9,18 @@ AssetManager::AssetManager(ChaiBus& eventbus)
 			this->onEvent(event);
 		}
 	);
+	// TODO Check if AssetFolder has Assets, if yes invoke readAssetDirContent()
+
+	// ALSO when importing asset avoid reading ALL assets 
+	// but only create the ONE and add to vec of all assets
 };
 
 void AssetManager::importAsset()
 {
-	string assetName = "test.jpg";
-	size_t assetSize = 0;
+	fs::path filePath = OpenFileDialogToGetFileName();
+	fs::path fileName = filePath.filename();
 
-	string filePath = OpenFileDialogToGetFileName();
-
-	Asset asset = Asset::Asset(assetName, assetSize, filePath);
 	_mLogger.log("Importing new asset...");
-	_mLogger.log(asset.getAssetUuid());
-	_mLogger.log(asset.getFilePath());
 
 	if (!fs::exists(filePath)) {
 		_mLogger.log("File was either deleted or not found");
@@ -34,18 +31,22 @@ void AssetManager::importAsset()
 
 	try
 	{
-		_assetParentExpDir /= "images";
-		_assetParentExpDir /= assetName;
+		fs::path importTargetPath = _engineAssetDir;
+		importTargetPath /= fileName;
 
-		_mLogger.log("Now copying the file to: " + _assetParentExpDir.string());
+		_mLogger.log("Now copying the file to: " + importTargetPath.string());
 		bool fileWasCopied = fs::copy_file(
 			pathOfFileToImport,
-			_assetParentExpDir,
+			importTargetPath,
 			boost::filesystem::copy_options::overwrite_existing
 		);
 
 		if (fileWasCopied) {
 			_mLogger.log("Successfully copied file to destination!");
+			readAssetDirContent();
+
+			AssetListUpdatedEvent event(listOfAssets);
+			_bus.publish(event);
 		}
 		else {
 			_mLogger.log("Something wrong happened while trying to copy the file");
@@ -75,7 +76,7 @@ void AssetManager::onEvent(ChaiEvent& event)
 	}
 }
 
-string AssetManager::OpenFileDialogToGetFileName()
+fs::path AssetManager::OpenFileDialogToGetFileName()
 {
 	OPENFILENAME ofn;       // common dialog box structure
 	wchar_t szFile[260]{};  // buffer for file name
@@ -105,7 +106,46 @@ string AssetManager::OpenFileDialogToGetFileName()
 		int size_needed = WideCharToMultiByte(CP_UTF8, 0, &ofn.lpstrFile[0], -1, NULL, 0, NULL, NULL);
 		std::string filePath(size_needed, 0);
 		WideCharToMultiByte(CP_UTF8, 0, &ofn.lpstrFile[0], -1, &filePath[0], size_needed, NULL, NULL);
-		return filePath;
+		fs::path path = fs::path(filePath);
+		return path;
 	}
-	return "";
+	return fs::path();
+}
+void AssetManager::readAssetDirContent()
+{
+	try
+	{
+		if (fs::exists(_engineAssetDir) && fs::is_directory(_engineAssetDir))
+		{
+			fs::directory_iterator end_iter;
+			_mLogger.log("Now iterating through the engine asset dir...");
+			for (fs::directory_iterator dir_iter(_engineAssetDir); dir_iter != end_iter; ++dir_iter) {
+				if (fs::is_regular_file(dir_iter->status())) {
+					_mLogger.log("Creating unique asset pointer and moving it to asset vector...");
+
+					unique_ptr<Asset> uniqueAssetPtr = make_unique<Asset>(
+						Asset(
+							dir_iter->path().filename().string(),
+							fs::file_size(dir_iter->path()),
+							dir_iter->path(),
+							dir_iter->path().filename().string()
+						)
+					);
+
+					//_mLogger.log(dir_iter->path().filename().string());
+					//std::cout << fs::file_size(dir_iter->path()) << std::endl;
+					//_mLogger.log(dir_iter->path().string());
+
+					listOfAssets.push_back(move(uniqueAssetPtr));
+				}
+			}
+		}
+		else {
+			_mLogger.log("Provided engine asset path does not exist or is not a directory");
+		}
+	}
+	catch (const std::exception& ex)
+	{
+		_mLogger.log(ex.what());
+	}
 };

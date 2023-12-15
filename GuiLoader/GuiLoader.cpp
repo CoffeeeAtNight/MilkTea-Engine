@@ -1,5 +1,4 @@
 #include "GuiLoader.h"
-#include <ChaiBusAddress.h>
 
 GuiLoader::GuiLoader(sf::RenderWindow* sfWin, ChaiBus& eventbus) : window(sfWin), _bus(eventbus) {};
 
@@ -11,8 +10,24 @@ GuiLoader::GuiLoader(sf::RenderWindow* sfWin, float mWinWidth, float mWinHeight,
 	// Now calculate _assetManagerGuiSize
 	_assetManagerGuiSize = ImVec2(_mWindowWidth, (_mWindowHeight / 2.5));
 	_assetManagerGuiPos = ImVec2(0, (_mWindowHeight - _assetManagerGuiSize.y));
+
+	_bus.subscribe(
+		ChaiBusAddress::INIT_ASSET_LIST,
+		[this](ChaiEvent& event) {
+			auto* assetEvent = dynamic_cast<AssetListUpdatedEvent*>(&event);
+			if (assetEvent) {
+				this->updateAssetManagerGui(assetEvent->assetList);
+			}
+		}
+	);
 }
 
+void GuiLoader::updateAssetManagerGui(const std::vector<std::unique_ptr<Asset>>& assetListRef)
+{
+	assetListPtr = &assetListRef;
+	_mLogger.log("GOT THE MESSAGE IN UPDATE METHOD INSIDE GUILOADER: ");
+	std::cout << assetListPtr->at(0)->getFilePath() << std::endl;
+}
 
 GuiLoader::~GuiLoader() {}
 
@@ -130,22 +145,16 @@ void GuiLoader::displayMainGuiWindow() {
 
 void GuiLoader::displayAssetManagerGuiWindow()
 {
-	// Set the border size
-	ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.5f); // A thinner border
-
-	// Set the border color to light green (using normalized RGBA values)
-	ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.56f, 0.93f, 0.56f, 1.0f));
+	// Set the background color to a light dark color (adjust the RGBA values as needed)
+	ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f)); // Example: dark gray
 
 	ImGui::SetNextWindowPos(_assetManagerGuiPos);
 	ImGui::BeginChild("assetManager", getAssetManagerGuiSize(), true);
-
-	// Content for the asset manager goes here
 
 	ImGui::EndChild();
 
 	// Reset styles to default
 	ImGui::PopStyleColor();
-	ImGui::PopStyleVar();
 }
 
 void GuiLoader::onImportButtonClicked(const string& filePath)

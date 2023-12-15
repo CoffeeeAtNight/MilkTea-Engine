@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include <GameEngine.h>
-#include <GuiLoader.h>
 
 const unsigned int GameEngine::WINDOW_WIDTH = 800;
 const unsigned int GameEngine::WINDOW_HEIGHT = 600;

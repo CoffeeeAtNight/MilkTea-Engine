@@ -81,6 +81,9 @@
     <ClCompile Include="Utility\MatchaLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Eventbus\Event\CustomEvents\AssetListUpdatedEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -132,6 +135,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\MatchaLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AssetListUpdatedEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

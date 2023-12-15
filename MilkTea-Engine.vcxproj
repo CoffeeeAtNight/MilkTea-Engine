@@ -160,6 +160,7 @@
     <ClCompile Include="AssetManager\Asset\AssetUuid.cpp" />
     <ClCompile Include="Eventbus\Event\ChaiEvent.cpp" />
     <ClCompile Include="Eventbus\ChaiBus.cpp" />
+    <ClCompile Include="Eventbus\Event\CustomEvents\AssetListUpdatedEvent.cpp" />
     <ClCompile Include="FontLoader\FontLoader.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GuiLoader\GuiLoader.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Utility\UuidFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AssetListUpdatedEvent.h" />
     <ClInclude Include="include\ChaiBusAddress.h" />
     <ClInclude Include="include\ChaiEvent.h" />
     <ClInclude Include="include\ChaiBus.h" />
