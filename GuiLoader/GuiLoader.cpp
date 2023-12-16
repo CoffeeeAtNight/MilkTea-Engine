@@ -27,6 +27,19 @@ void GuiLoader::updateAssetManagerGui(const std::vector<std::unique_ptr<Asset>>&
 	assetListPtr = &assetListRef;
 	_mLogger.log("GOT THE MESSAGE IN UPDATE METHOD INSIDE GUILOADER: ");
 	std::cout << assetListPtr->at(0)->getFilePath() << std::endl;
+
+	sf::Texture texture = sf::Texture();
+	bool is_textureCreated = texture.create(30, 30);
+	const string filePath = assetListPtr->at(0)->getFilePath().string();
+	if (!texture.loadFromFile(filePath)) {
+		// Handle the error, such as logging or displaying a message
+		_mLogger.log("Failed to load the image/texture from file: " + filePath);
+		return;
+	}
+
+	GLuint textureID = texture.getNativeHandle();
+	unique_ptr<GLuint> textureIdPtr = make_unique<GLuint>(textureID);
+	textureIdList.push_back(move(textureIdPtr));
 }
 
 GuiLoader::~GuiLoader() {}
@@ -150,6 +163,17 @@ void GuiLoader::displayAssetManagerGuiWindow()
 
 	ImGui::SetNextWindowPos(_assetManagerGuiPos);
 	ImGui::BeginChild("assetManager", getAssetManagerGuiSize(), true);
+
+	for (size_t i = 0; i < textureIdList.size(); i++)
+	{
+		ImGui::ImageButton(
+			(ImTextureID)textureIdList[i].get(),
+			ImVec2(
+				(float)300,
+				(float)300
+			)
+		);
+	}
 
 	ImGui::EndChild();
 

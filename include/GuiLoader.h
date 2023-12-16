@@ -2,6 +2,7 @@
 #ifndef GUILOADER
 #define GUILOADER
 #include <SFML/Graphics.hpp>
+#include <imgui-SFML.cpp>
 #include <functional>
 
 #include <imgui.h>
@@ -27,6 +28,8 @@ class GuiLoader
 	ImVec2 _assetManagerGuiPos = ImVec2(0, _mWindowHeight - _assetManagerGuiSize.y);
 
 	const std::vector<std::unique_ptr<Asset>>* assetListPtr = nullptr;
+
+	std::vector<std::unique_ptr<GLuint>> textureIdList;
 
 	ChaiBus& _bus;
 
