@@ -2,7 +2,7 @@
 #ifndef GUILOADER
 #define GUILOADER
 #include <SFML/Graphics.hpp>
-#include <imgui-SFML.cpp>
+#include <imgui-SFML.h>
 #include <functional>
 
 #include <imgui.h>
@@ -29,7 +29,7 @@ class GuiLoader
 
 	const std::vector<std::unique_ptr<Asset>>* assetListPtr = nullptr;
 
-	std::vector<std::unique_ptr<GLuint>> textureIdList;
+	std::vector<sf::Texture> initAssetTextureInstances();
 
 	ChaiBus& _bus;
 

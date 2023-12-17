@@ -7,6 +7,7 @@
 #include <map>
 #include <AssetUuid.h>
 #include <boost/filesystem/path.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 #include <MatchaLogger.h>
 
@@ -33,6 +34,8 @@ public:
 	boost::filesystem::path getFilePath();
 	void setFilePath(const string& path);
 
+	sf::Texture getTextureInstance();
+
 	FileTypes determineFileType(string nameOfFileWithExtension);
 
 	// Write function to load file content into buffer
@@ -44,6 +47,7 @@ private:
 	uintmax_t size = 0;
 	boost::filesystem::path filePath;
 	FileTypes fileType;
+	sf::Texture assetIconTexture;
 	//time_t dateModified;
 	bool loaded = false;
 	int referenceCount = 0;

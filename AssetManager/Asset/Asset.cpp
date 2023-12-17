@@ -23,6 +23,10 @@ string Asset::getAssetUuid()
 	return uuid;
 }
 
+sf::Texture Asset::getTextureInstance()
+{
+	return assetIconTexture;
+}
 
 boost::filesystem::path Asset::getFilePath()
 {
