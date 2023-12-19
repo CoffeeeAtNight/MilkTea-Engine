@@ -9,7 +9,7 @@ MilkTea Engine is a simple, beginner-friendly 2D game engine designed for ease o
 - Support for simple sprite and sound assets.
 
 ## Getting Started
-(Instructions on how to install, set up, and start using MilkTea Engine)
+(Instructions on how to install, set up, and start using MilkTea Engine, coming soon!)
 
 ## Project Roadmap and Checklist
 
